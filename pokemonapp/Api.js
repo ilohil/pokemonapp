@@ -18,11 +18,13 @@ export const fetchPokemons = async () => {
                 const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonData.id}`)
                 const speciesData = await speciesResponse.json();
 
-                //Palautetaan lista pokemoneita joilla on id, nimi, kuva, kuvaus ja ääni
+                //Palautetaan lista pokemoneita joilla on id, nimi, kuva, pituus, paino, kuvaus ja ääni
                 return {
                     id: pokemonData.id,
                     name: pokemonData.name,
                     image: pokemonData.sprites.front_default,
+                    height: pokemonData.height,
+                    weight: pokemonData.weight,
                     // Etsitään ensimmäinen englanninkielinen kuvaus
                     description: speciesData.flavor_text_entries.find(entry => entry.language.name === 'en')?.flavor_text,
                     // Apin äänet tulevat kolmannen osapuolen lähteestä, joten ne tulee hakea sieltä Pokemonin id:llä

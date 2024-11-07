@@ -32,29 +32,29 @@ export default function App() {
   const renderScene = ({ route }) => {
     switch (route.key) {
       case 'home':
-        return <AllPokemons pokemons={pokemons} loading={loading} />;
+        return <AllPokemons pokemons={pokemons} loading={loading} />
       case 'favorites':
-        return <FavoritePokemons pokemons={pokemons} loading={loading} />;
+        return <FavoritePokemons pokemons={pokemons} loading={loading} />
       default:
-        return null;
+        return <AllPokemons pokemons={pokemons} loading={loading} />;
     }
   };
 
   return (
-    <PaperProvider>
+      <PaperProvider>
 
-      <Appbar mode="medium" elevated>
-        <Appbar.Content title="Pokemon app" />
-      </Appbar>
+        <Appbar mode="medium" elevated>
+          <Appbar.Content title="Pokemon app" />
+        </Appbar>
 
-      <BottomNavigation 
-        navigationState={{index, routes}}
-        onIndexChange={setIndex}
-        renderScene={renderScene}
-      />
+        <BottomNavigation 
+          navigationState={{index, routes}}
+          onIndexChange={setIndex}
+          renderScene={renderScene}
+        />
 
-      <StatusBar style="auto" />
-    </PaperProvider>
+        <StatusBar style="auto" />
+      </PaperProvider>
   )
 }
 

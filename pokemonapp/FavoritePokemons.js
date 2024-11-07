@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, Text } from "react-native"
 import { StyleSheet } from "react-native";
 
-export default function FavoritePokemons() {
+export default function FavoritePokemons(pokemons, loading) {
 
     return (
         <View style={styles.container}>

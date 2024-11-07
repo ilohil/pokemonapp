@@ -17,4 +17,10 @@ export const styles = StyleSheet.create({
         height: 200,
         margin: 10
     },
+    modal: {
+        backgroundColor: "white",
+        padding: 20,
+        margin: 20,
+        borderRadius: 10,
+    },
   });
