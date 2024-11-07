@@ -5,7 +5,6 @@ import AllPokemons from './screens/AllPokemons';
 import FavoritePokemons from './screens/FavoritePokemons';
 import { fetchPokemons } from './data/Api';
 import { initialize } from './data/SQLite';
-import { SQLiteProvider } from 'expo-sqlite';
 
 export default function App() {
 
@@ -22,6 +21,7 @@ export default function App() {
       setLoading(false);
     };
     handleFetch();
+    initialize();
   }, []);
 
 
@@ -44,11 +44,6 @@ export default function App() {
   };
 
   return (
-    <SQLiteProvider
-      databaseName='favoritedb.db'
-      onInit={initialize}
-      onError={error => console.error('Could not open database', error)}
-    >
       <PaperProvider>
 
         <Appbar mode="medium" elevated>
@@ -63,7 +58,6 @@ export default function App() {
 
         <StatusBar style="auto" />
       </PaperProvider>
-    </SQLiteProvider>
   )
 }
 

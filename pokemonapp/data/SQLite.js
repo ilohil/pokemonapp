@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-const db = SQLite.openDatabaseSync('favoritedb');
+const db = SQLite.openDatabaseSync('favoritedb')
 
 // Luodaan taulu suosikkipokemoneille
 export const initialize = async () => {
@@ -15,7 +15,9 @@ export const initialize = async () => {
 // Funktio jolla voi lisätä suosikkipokemonin
 export const saveFavorite = async (pokemonId) => {
     try {
-        await db.runAsync('INSERT INTO favorites VALUES (?)', pokemonId);
+        await db.runAsync('INSERT INTO favorites (pokemonId) VALUES (?)', pokemonId);
+        console.log('suosikki tallennettu idllä:', pokemonId)
+        await updateFavorites();
     } catch (error) {
         console.error('Could not add favorite Pokemon', error);
     }
