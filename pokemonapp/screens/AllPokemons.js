@@ -1,14 +1,17 @@
 import { View } from "react-native"
 import { FlatList, Image, ActivityIndicator } from "react-native";
-import { Card, IconButton, Modal, Portal, Text } from "react-native-paper";
-import { styles } from "./Styles";
+import { Card, IconButton, Portal } from "react-native-paper";
+import { styles } from "../styles/Styles";
 import { useState } from "react";
 import DisplayPokemon from "./DisplayPokemon";
+import { useSQLiteContext } from "expo-sqlite";
 
 export default function AllPokemons({pokemons, loading}) {
 
     const [selectedPokemon, setSelectedPokemon] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
+
+    const db = useSQLiteContext();
 
     // Etsitään Pokemon ID:llä ja asetetaan modal näkyväksi
     const showModal = (pokemonId) => {

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { PaperProvider, Appbar, BottomNavigation } from 'react-native-paper';
-import AllPokemons from './AllPokemons';
-import FavoritePokemons from './FavoritePokemons';
-import { fetchPokemons } from './Api';
+import AllPokemons from './screens/AllPokemons';
+import FavoritePokemons from './screens/FavoritePokemons';
+import { fetchPokemons } from './data/Api';
+import { initialize } from './data/SQLite';
+import { SQLiteProvider } from 'expo-sqlite';
 
 export default function App() {
 
@@ -11,7 +13,7 @@ export default function App() {
   const [pokemons, setPokemons] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Haetaan pokemonit, jotta ne voidaan välittää muille komponenteille propsina navigaatiossa
+  // Haetaan pokemonit, jotta ne voidaan välittää muille komponenteille propsina navigaatiossa ja käynnistetään tietokanta
   useEffect(() => {
     const handleFetch = async () => {
       setLoading(true);
@@ -21,6 +23,7 @@ export default function App() {
     };
     handleFetch();
   }, []);
+
 
   // Asetetaan navigoinnille tekstit ja ikonit
   const [routes] = useState([
@@ -41,6 +44,11 @@ export default function App() {
   };
 
   return (
+    <SQLiteProvider
+      databaseName='favoritedb.db'
+      onInit={initialize}
+      onError={error => console.error('Could not open database', error)}
+    >
       <PaperProvider>
 
         <Appbar mode="medium" elevated>
@@ -55,6 +63,7 @@ export default function App() {
 
         <StatusBar style="auto" />
       </PaperProvider>
+    </SQLiteProvider>
   )
 }
 

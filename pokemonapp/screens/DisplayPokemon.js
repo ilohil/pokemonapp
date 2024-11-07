@@ -1,6 +1,6 @@
 import { Image, View } from "react-native";
 import { Modal, Portal, Text, Button } from "react-native-paper";
-import { styles } from "./Styles";
+import { styles } from "../styles/Styles";
 import { Audio } from "expo-av";
 import { useState, useEffect } from "react";
 
