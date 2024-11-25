@@ -3,8 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { PaperProvider, Appbar, BottomNavigation } from 'react-native-paper';
 import AllPokemons from './screens/AllPokemons';
 import FavoritePokemons from './screens/FavoritePokemons';
-import { fetchPokemons } from './data/Api';
-import { initialize } from './data/SQLite';
+import { fetchPokemons } from './api/Api';
+import { initialize } from './utils/SQLite';
 
 export default function App() {
 
@@ -24,12 +24,11 @@ export default function App() {
     initialize();
   }, []);
 
-
   // Asetetaan navigoinnille tekstit ja ikonit
-  const [routes] = useState([
-    {key: 'home', title: 'Home', focusedIcon: 'home'},
-    {key: 'favorites', title: 'Favorites', focusedIcon: 'heart'}
-  ]);
+  const routes = [
+    { key: 'home', title: 'Home', focusedIcon: 'home' },
+    { key: 'favorites', title: 'Favorites', focusedIcon: 'heart' }
+  ];
 
   // Asetetaan navigoinnin avaimille osoitteet
   const renderScene = ({ route }) => {
@@ -50,8 +49,8 @@ export default function App() {
           <Appbar.Content title="Pokemon app" />
         </Appbar>
 
-        <BottomNavigation 
-          navigationState={{index, routes}}
+        <BottomNavigation
+          navigationState={{ index, routes }}
           onIndexChange={setIndex}
           renderScene={renderScene}
         />

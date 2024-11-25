@@ -16,7 +16,7 @@ export const initialize = async () => {
 export const saveFavorite = async (pokemonId) => {
     try {
         await db.runAsync('INSERT INTO favorites (pokemonId) VALUES (?)', pokemonId);
-        console.log('suosikki tallennettu idllä:', pokemonId)
+        console.log('Favorite added with id: ', pokemonId)
         await updateFavorites();
     } catch (error) {
         console.error('Could not add favorite Pokemon', error);
@@ -35,9 +35,10 @@ export const updateFavorites = async () => {
 }
 
 // Funktio jolla voi poistaa Pokemonin suosikeista
-export const deleteItem = async (pokemonId) => {
+export const deleteFavorite = async (pokemonId) => {
     try {
         await db.runAsync('DELETE FROM favorites where pokemonId=?', pokemonId);
+        console.log('Favorite deleted with id: ', pokemonId)
         await updateFavorites();
     } catch (error) {
         console.error('Could not delete Pokemon from favorites', error);

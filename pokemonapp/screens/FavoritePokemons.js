@@ -4,6 +4,8 @@ import { StyleSheet } from "react-native";
 
 export default function FavoritePokemons(pokemons, loading) {
 
+    const [favoritePokemons, setFavoritePokemons] = useState([])
+
     return (
         <View style={styles.container}>
             <Text>Favorite pokemons!</Text>
