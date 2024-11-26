@@ -5,6 +5,7 @@ import AllPokemons from './screens/AllPokemons';
 import FavoritePokemons from './screens/FavoritePokemons';
 import { fetchPokemons } from './api/Api';
 import { initialize } from './utils/SQLite';
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
 
@@ -43,6 +44,7 @@ export default function App() {
   };
 
   return (
+    <NavigationContainer>
       <PaperProvider>
 
         <Appbar mode="medium" elevated>
@@ -57,6 +59,7 @@ export default function App() {
 
         <StatusBar style="auto" />
       </PaperProvider>
+    </NavigationContainer>
   )
 }
 

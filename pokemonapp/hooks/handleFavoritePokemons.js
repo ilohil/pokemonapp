@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { updateFavorites, deleteFavorite, saveFavorite } from "../utils/SQLite";
 
 export function handleFavoritepokemons() {
@@ -6,16 +6,17 @@ export function handleFavoritepokemons() {
     const [favoritePokemons, setFavoritePokemons] = useState([]);
 
     //Päivitetään suosikkipokemonit
-    const updateFavoritePokemons = async () => {
+    const updateFavoritePokemons = useCallback(async () => {
         try {
             const favorites = await updateFavorites();
             setFavoritePokemons(favorites);
+            console.log(favorites)
         } catch (error) {
-            console.log("Couldn't fetch favorite pokemons: ", error)
+            console.error('Error updating favorite Pokemons:', error);
         }
 
-        console.log(favoritePokemons);
-    }
+        console.log(favoritePokemons)
+    }, []);
 
 
     // Poistetaan Pokemon suosikeista tai lisätään suosikkeihin
@@ -27,16 +28,18 @@ export function handleFavoritepokemons() {
             } else {
                 await saveFavorite(pokemonId);
             }
+
             await updateFavoritePokemons();
 
         } catch (error) {
             console.log("Couldn't update favorite pokemon id: ", pokemonId, error)
         }
-
     }
 
-    //Ladataan suosikki kun hook renderöidään
-    useEffect(() => { updateFavoritePokemons() }, []);
+    //Ladataan suosikit uudelleen kun sivu renderöidään
+    useEffect(() => {
+        updateFavoritePokemons();
+      }, []);
 
     // Palautetaan suosikkipokemonit ja funktio
     return { favoritePokemons, toggleFavoritePokemon };
