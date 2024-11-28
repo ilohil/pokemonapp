@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "pokemonapp",
+    "newArchEnabled": true,
     "slug": "pokemonapp",
     "version": "1.0.0",
     "orientation": "portrait",

@@ -38,6 +38,7 @@ export default function DisplayPokemon({visible, onDismiss, pokemon}) {
                     <View>
                         <Text style={styles.title}>{pokemon.name}</Text>
                         <Image source={{ uri: pokemon.image }} style={styles.image} />
+                        <Text>{pokemon.types}</Text>
                         <Text>Weight: {pokemon.weight / 10} kg </Text>
                         <Text>Height: {pokemon.height / 10} m</Text>
                         <Text>{pokemon.description}</Text>

@@ -9,7 +9,7 @@ import { useModal } from "../hooks/useModal";
 export default function AllPokemons({pokemons, loading}) {
 
     // Käytetään luotuja hookkeja 
-    const { favoritePokemons, toggleFavoritePokemon} = handleFavoritepokemons();
+    const { favoritePokemons, toggleFavoritePokemon } = handleFavoritepokemons();
     const { selectedPokemon, modalVisible, showModal, hideModal } = useModal();
 
     return (

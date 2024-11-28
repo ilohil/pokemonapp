@@ -5,8 +5,9 @@ import { styles } from "../styles/Styles";
 import DisplayPokemon from "../components/DisplayPokemon";
 import { handleFavoritepokemons } from "../hooks/handleFavoritePokemons";
 import { useModal } from "../hooks/useModal";
-import { useState, useEffect } from "react";
-import React from "react";
+import { useState, useEffect, useCallback} from "react";
+import { useFocusEffect } from "@react-navigation/native";
+
 
 export default function FavoritePokemons({pokemons, loading}) {
 
@@ -15,15 +16,7 @@ export default function FavoritePokemons({pokemons, loading}) {
     const { selectedPokemon, modalVisible, showModal, hideModal } = useModal();
 
     // Luodaan lista suosikkipokemoneille
-    const [favoritePokemonList, setFavoritePokemonList] = useState([])
-    
-      // Päivitetään suosikkipokemonien lista aina kun favoritePokemons muuttuu
-      useEffect(() => {
-        const updatedFavorites = pokemons.filter(pokemon =>
-          favoritePokemons.some(fav => fav.pokemonId === pokemon.id)
-        );
-        setFavoritePokemonList(updatedFavorites);
-      }, [favoritePokemons]); 
+    const favoritePokemonList = pokemons.filter(pokemon => favoritePokemons.some(fav => fav.pokemonId === pokemon.id));
 
     return (
         <Portal.Host>

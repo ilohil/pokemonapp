@@ -15,13 +15,18 @@ export const fetchPokemons = async () => {
                 const pokemonData = await pokemonResponse.json();
 
                 // Noudetaan Pokemonin kuvaukset Pokemonin id:llä
-                const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonData.id}`)
+                const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonData.id}`);
                 const speciesData = await speciesResponse.json();
 
-                //Palautetaan lista pokemoneita joilla on id, nimi, kuva, pituus, paino, kuvaus ja ääni
+                // Erotellaan pokemonin tyypit
+
+                const typeData = pokemonData.types.map(type => type.type.name);
+
+                //Palautetaan lista pokemoneita joilla on id, nimi, tyypit, kuva, pituus, paino, kuvaus ja ääni
                 return {
                     id: pokemonData.id,
                     name: pokemonData.name,
+                    types: typeData,
                     image: pokemonData.sprites.front_default,
                     height: pokemonData.height,
                     weight: pokemonData.weight,
