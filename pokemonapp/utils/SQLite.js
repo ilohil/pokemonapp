@@ -17,6 +17,7 @@ export const saveFavorite = async (pokemonId) => {
     try {
         await db.runAsync('INSERT INTO favorites (pokemonId) VALUES (?)', pokemonId);
         console.log('Favorite added with id: ', pokemonId)
+        await updateFavorites();
     } catch (error) {
         console.error('Could not add favorite Pokemon', error);
     }

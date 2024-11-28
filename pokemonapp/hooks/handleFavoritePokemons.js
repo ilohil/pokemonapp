@@ -1,6 +1,5 @@
-import { useState, useCallback} from "react";
+import { useState, useEffect} from "react";
 import { updateFavorites, deleteFavorite, saveFavorite } from "../utils/SQLite";
-import { useFocusEffect } from "@react-navigation/native";
 
 
 export function handleFavoritepokemons() {
@@ -12,6 +11,7 @@ export function handleFavoritepokemons() {
         try {
             const favorites = await updateFavorites();
             setFavoritePokemons(favorites);
+            console.log(favoritePokemons)
         } catch (error) {
             console.error('Error updating favorite Pokemons:', error);
         }
@@ -27,18 +27,16 @@ export function handleFavoritepokemons() {
                 await saveFavorite(pokemonId);
             }
             await updateFavoritePokemons();
+            console.log(favoritePokemons)
         } catch (error) {
             console.log("Couldn't update favorite pokemon id: ", pokemonId, error)
         }
     }
 
     //Ladataan suosikit uudelleen kun sivu renderöidään
-    useFocusEffect(
-        useCallback(() => {
-            updateFavoritePokemons();
-            console.log(favoritePokemons)
-        }, [])
-    );
+    useEffect(() => {
+        updateFavoritePokemons();
+      }, []);
 
     // Palautetaan suosikkipokemonit ja funktio
     return { favoritePokemons, toggleFavoritePokemon };

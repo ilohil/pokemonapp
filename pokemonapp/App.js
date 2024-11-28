@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { PaperProvider, Appbar, BottomNavigation , TextInput} from 'react-native-paper';
+import { PaperProvider, Appbar, BottomNavigation , TextInput, Searchbar} from 'react-native-paper';
 import AllPokemons from './screens/AllPokemons';
 import FavoritePokemons from './screens/FavoritePokemons';
 import { fetchPokemons } from './api/Api';
@@ -54,18 +54,17 @@ export default function App() {
   const renderScene = ({ route }) => {
     switch (route.key) {
       case 'home':
-        return <AllPokemons key="home" pokemons={filteredPokemons} loading={loading} />;
+        return <AllPokemons pokemons={filteredPokemons} loading={loading} />;
       case 'favorites':
-        return <FavoritePokemons key="favorites" pokemons={filteredPokemons} loading={loading} />;
+        return <FavoritePokemons pokemons={filteredPokemons} loading={loading} />;
       default:
-        return <AllPokemons key="home" pokemons={filteredPokemons} loading={loading} />;
+        return <AllPokemons pokemons={filteredPokemons} loading={loading} />;
     }
   };
 
   //Funktio hakuinputin näyttämiselle ja piilottamiselle
   
   const handleSearchPress = () => {
-    
     setShowSearch((prev) => !prev);
 
     if (showSearch) { 
@@ -79,27 +78,27 @@ export default function App() {
 
         <Appbar mode="medium" elevated>
           <Appbar.Content style={{ marginLeft: 30 }}title="Pokémon app" />
-          <SafeAreaView style={{ marginTop: -200, marginRight: -200}}>
-          <Appbar.Action style={{marginTop: 275, marginRight: 240, backgroundColor: 'lightblue'}} size={33} icon="magnify" onPress={handleSearchPress} />
-          </SafeAreaView>
+          <Appbar.Action style={{marginTop: 100, marginRight: 50, backgroundColor: 'lightblue'}} size={33} icon="magnify" onPress={handleSearchPress} />
         </Appbar>
 
 
         {showSearch && (
           <View>
-          <TextInput
-            label="Search Pokémon"
+          <Searchbar 
+            placeholder='Search Pokémon'
             value={search}
             onChangeText={setSearch}
+            style={{marginTop: 15}}
           />
           </View>
         )}
 
         <BottomNavigation
+          key={routes[index].key}
           navigationState={{ index, routes }}
           onIndexChange={setIndex}
           renderScene={renderScene}
-          key={routes[index].key}
+          
         />
 
         <StatusBar style="auto" />
