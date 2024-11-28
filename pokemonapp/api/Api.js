@@ -20,20 +20,43 @@ export const fetchPokemons = async () => {
 
                 // Erotellaan pokemonin tyypit
 
-                const typeData = pokemonData.types.map(type => type.type.name);
+                const typeData = pokemonData.types.map(type => type.type.name).join(", ");
+
+                // Etsitään pokemonin isku ja sen damage
+                let moveName = 'N/A'
+                let movePower = 'N/A'
+
+                if (pokemonData.moves.length > 0) {
+                    moveName = pokemonData.moves[0].move.name;
+                    const moveResponse = await fetch(pokemonData.moves[0].move.url);
+                    const moveData = await moveResponse.json();
+                    movePower = moveData.power || 'N/A'
+                }
+
+                // Etsitään pokemonin hp
+                const hp = pokemonData.stats.find(stat => stat.stat.name === 'hp')?.base_stat || 'N/A';
+
+                // Tehdään muotoiluja saadulle datalle
+
+                const name = pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1).toLowerCase();
+                const weight = `${pokemonData.weight / 10} kg`
+                const height = `${pokemonData.height / 10} m`
+                const move = moveName.charAt(0).toUpperCase() + moveName.slice(1).toLowerCase();
 
                 //Palautetaan lista pokemoneita joilla on id, nimi, tyypit, kuva, pituus, paino, kuvaus ja ääni
                 return {
                     id: pokemonData.id,
-                    name: pokemonData.name,
+                    name: name,
                     types: typeData,
                     image: pokemonData.sprites.front_default,
-                    height: pokemonData.height,
-                    weight: pokemonData.weight,
+                    height: height,
+                    weight: weight,
                     // Etsitään ensimmäinen englanninkielinen kuvaus
                     description: speciesData.flavor_text_entries.find(entry => entry.language.name === 'en')?.flavor_text,
                     // Apin äänet tulevat kolmannen osapuolen lähteestä, joten ne tulee hakea sieltä Pokemonin id:llä
-                    sound: `https://pokemoncries.com/cries-old/${pokemonData.id}.mp3`
+                    sound: `https://pokemoncries.com/cries-old/${pokemonData.id}.mp3`,
+                    health: hp,
+                    move: {name: move, power: movePower},
                 };
             })
         );
