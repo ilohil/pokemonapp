@@ -15,12 +15,12 @@ export function useContacts() {
     const showDialog = () => {
         getContacts();
         setVisible(true);
-      };
+    };
 
     const hideDialog = () => {
         setVisible(false);
         setSelected("")
-      };
+    };
 
     // Funktio valitun kontaktin löytämiseen ID:llä
 
@@ -41,44 +41,44 @@ export function useContacts() {
 
     // Tällä haetaan kontaktit tekstiviestin lähettämiseen
     const getContacts = async () => {
-    
+
         const { status } = await Contacts.requestPermissionsAsync();
-  
+
         if (status === 'granted') {
-          const { data } = await Contacts.getContactsAsync(
-            { fields : [Contacts.Fields.PhoneNumbers]}
-          );
+            const { data } = await Contacts.getContactsAsync(
+                { fields: [Contacts.Fields.PhoneNumbers] }
+            );
 
-         const formattedData = data.map((contact) => ({
-            key: `${contact.id}`,
-            value: `${contact.name}`
+            const formattedData = data.map((contact) => ({
+                key: `${contact.id}`,
+                value: `${contact.name}`
 
-          }));
+            }));
 
-          setFormattedContacts(formattedData);
-          setContacts(data);
+            setFormattedContacts(formattedData);
+            setContacts(data);
 
         }
-      };
+    };
 
-      // Tällä lähetetään viesti suosikkipokemoneista
+    // Tällä lähetetään viesti suosikkipokemoneista
     const sendSms = async (favoritePokemonList) => {
 
         const isSMSAvailable = await SMS.isAvailableAsync();
 
         const favoriteSMS = favoritePokemonList.map(pokemon => pokemon.name).join(', ');
-      
+
         if (isSMSAvailable) {
-          const { result } = await SMS.sendSMSAsync([selectedContact.phoneNumbers[0].number], 
-            'My favourite Pokémons: ' + favoriteSMS);
+            const { result } = await SMS.sendSMSAsync([selectedContact.phoneNumbers[0].number],
+                'My favourite Pokémons: ' + favoriteSMS);
         } else {
             console.log("Viestiä ei voi lähettää")
         }
 
         hideDialog();
 
-      }
+    }
 
-      return {visible, formattedContacts, showDialog, hideDialog, sendSms, setSelect, selected}
+    return { visible, formattedContacts, showDialog, hideDialog, sendSms, setSelect, selected }
 
 }

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { PaperProvider, Appbar, BottomNavigation , TextInput, Searchbar} from 'react-native-paper';
+import { PaperProvider, Appbar, BottomNavigation, Searchbar, ActivityIndicator } from 'react-native-paper';
 import AllPokemons from './screens/AllPokemons';
 import FavoritePokemons from './screens/FavoritePokemons';
 import { fetchPokemons } from './api/Api';
 import { initialize } from './utils/SQLite';
 import { NavigationContainer } from '@react-navigation/native';
 import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { styles, theme } from './styles/Styles';
+import { useFonts } from 'expo-font';
 
 export default function App() {
 
@@ -31,6 +32,16 @@ export default function App() {
     setFilteredPokemons(data || []);
     setLoading(false);
   }
+
+  // Ladataan fontit
+  const [fontsLoaded] = useFonts({
+    'KirangHaerang': require('./assets/fonts/Kirang_Haerang/KirangHaerang-Regular.ttf'),
+    'Orbitron': require('./assets/fonts/Orbitron/static/Orbitron-Regular.ttf'),
+    'RubikIso': require('./assets/fonts/Rubik_Iso/RubikIso-Regular.ttf'),
+    'SixtyfourConvergence': require('./assets/fonts/Sixtyfour_Convergence/static/SixtyfourConvergence-Regular.ttf'),
+    'Tomorrow': require('./assets/fonts/Tomorrow/Tomorrow-Regular.ttf'),
+    'VT323': require('./assets/fonts/VT323/VT323-Regular.ttf'),
+  });
 
   // Päivitetään Pokemonlistaa, jos hakuteksti muuttuu
   useEffect(() => {
@@ -63,48 +74,60 @@ export default function App() {
   };
 
   //Funktio hakuinputin näyttämiselle ja piilottamiselle
-  
+
   const handleSearchPress = () => {
     setShowSearch((prev) => !prev);
 
-    if (showSearch) { 
+    if (showSearch) {
       setSearch('')
     };
   };
 
   return (
-    <NavigationContainer>
-      <PaperProvider>
+    <PaperProvider theme={theme}>
 
-        <Appbar mode="medium" elevated>
-          <Appbar.Content style={{ marginLeft: 30 }}title="Pokémon app" />
-          <Appbar.Action style={{marginTop: 100, marginRight: 50, backgroundColor: 'lightblue'}} size={33} icon="magnify" onPress={handleSearchPress} />
-        </Appbar>
+      {!fontsLoaded ? (
+        <ActivityIndicator size="large" />
+      ) : (
+
+        <NavigationContainer>
+
+          <Appbar mode="medium" elevated safeAreaInsets={{ top: 0 }} style={styles.appbar}>
+            <Appbar.Content titleStyle={styles.appbarcontent} title="Pokémon app" />
+            <Appbar.Action style={styles.appbaraction} size={30} icon="magnify" onPress={handleSearchPress} />
+          </Appbar>
+
+          {showSearch && (
+            <View style={{ backgroundColor: 'rgb(247, 224, 148)' }}>
+              <Searchbar
+                placeholder='Search Pokémon'
+                value={search}
+                onChangeText={setSearch}
+                style={{ marginTop: 15 }}
+              />
+            </View>
+          )}
+
+          <BottomNavigation
+            key={routes[index].key}
+            navigationState={{ index, routes }}
+            onIndexChange={setIndex}
+            renderScene={renderScene}
+            barStyle={styles.bottomnavi}
+            style={{ surface: 'blue', secondaryContainer: 'blue' }}
+            activeColor='rgb(237, 187, 50)'
+            inactiveColor='rgb(0, 0, 0)'
+
+          >
 
 
-        {showSearch && (
-          <View>
-          <Searchbar 
-            placeholder='Search Pokémon'
-            value={search}
-            onChangeText={setSearch}
-            style={{marginTop: 15}}
-          />
-          </View>
-        )}
 
-        <BottomNavigation
-          key={routes[index].key}
-          navigationState={{ index, routes }}
-          onIndexChange={setIndex}
-          renderScene={renderScene}
-          
-        />
+          </BottomNavigation>
 
-        <StatusBar style="auto" />
-      </PaperProvider>
-    </NavigationContainer>
+          <StatusBar style="auto" />
+        </NavigationContainer>
+      )}
+    </PaperProvider>
   );
 }
-
 

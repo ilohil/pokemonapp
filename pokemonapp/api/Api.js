@@ -56,7 +56,7 @@ export const fetchPokemons = async () => {
                     // Apin äänet tulevat kolmannen osapuolen lähteestä, joten ne tulee hakea sieltä Pokemonin id:llä
                     sound: `https://pokemoncries.com/cries-old/${pokemonData.id}.mp3`,
                     health: hp,
-                    move: {name: move, power: movePower},
+                    move: { name: move, power: movePower },
                 };
             })
         );

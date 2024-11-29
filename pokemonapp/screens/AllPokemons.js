@@ -5,39 +5,44 @@ import { styles } from "../styles/Styles";
 import DisplayPokemon from "../components/DisplayPokemon";
 import { handleFavoritepokemons } from "../hooks/handleFavoritePokemons";
 import { useModal } from "../hooks/useModal";
+import ShowSnackBar from "../components/ShowSnackBar";
 
-export default function AllPokemons({pokemons, loading}) {
+export default function AllPokemons({ pokemons, loading }) {
 
     // Käytetään luotuja hookkeja 
-    const { favoritePokemons, toggleFavoritePokemon } = handleFavoritepokemons();
+    const { favoritePokemons, toggleFavoritePokemon, snackVisible, snackMessage, dismissSnackBar } = handleFavoritepokemons();
     const { selectedPokemon, modalVisible, showModal, hideModal } = useModal();
 
     return (
         <Portal.Host>
-        <View style={styles.container}>
+            <View style={styles.container}>
 
-        {loading && <ActivityIndicator size='large' />}
+                {loading && <ActivityIndicator size='large' />}
 
-        <FlatList 
-        keyExtractor={(item) => item.id.toString()}
-        numColumns={2}
-        data={pokemons}
-        renderItem={({item}) =>
-        <Card style={styles.card}>
-            <Card.Title title={item.name}/>
-            <Card.Content>
-                <Image source={{ uri: item.image }} style={styles.image}/>
-            </Card.Content>
-            <Card.Actions>
-                <IconButton icon={favoritePokemons.some(fav => fav.pokemonId === item.id) ? "heart" : "heart-outline"} style={{marginTop: -25, marginRight: 35}} onPress={() => toggleFavoritePokemon(item.id)}/>
-                <IconButton icon="information-outline" style={{marginTop: -25}}  onPress={() => showModal(pokemons, item.id)}/>
-            </Card.Actions>
-        </Card>
-        }/>
+                <FlatList
+                    keyExtractor={(item) => item.id.toString()}
+                    numColumns={2}
+                    data={pokemons}
+                    renderItem={({ item }) => {
+                        const isFavorite = favoritePokemons.some(fav => fav.pokemonId === item.id);
+                        return (
+                            <Card style={styles.card} >
+                                <Card.Title title={item.name} style={styles.globalText} titleStyle={styles.globalText} />
+                                <Card.Content>
+                                    <Image source={{ uri: item.image }} style={styles.image} />
+                                </Card.Content>
+                                <Card.Actions>
+                                    <IconButton icon={isFavorite ? "heart" : "heart-outline"} style={styles.heartbutton} size={15} iconColor="rgb(245, 64, 64)" onPress={() => toggleFavoritePokemon(item.id)} />
+                                    <IconButton icon="information-outline" style={styles.infobutton} iconColor="rgb(0, 0, 0)" size={30} onPress={() => showModal(pokemons, item.id)} />
+                                </Card.Actions>
+                            </Card>
+                        );
+                    }} />
 
-        <DisplayPokemon visible={modalVisible} onDismiss={hideModal} pokemon={selectedPokemon} />
+                <DisplayPokemon visible={modalVisible} onDismiss={hideModal} pokemon={selectedPokemon} />
+                <ShowSnackBar visible={snackVisible} message={snackMessage} dismissSnackBar={dismissSnackBar} />
 
-        </View>
+            </View>
         </Portal.Host>
     )
 }

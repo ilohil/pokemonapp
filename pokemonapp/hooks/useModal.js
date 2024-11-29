@@ -17,5 +17,5 @@ export function useModal() {
         setSelectedPokemon(null);
     };
 
-    return {selectedPokemon, modalVisible, showModal, hideModal};
+    return { selectedPokemon, modalVisible, showModal, hideModal };
 }

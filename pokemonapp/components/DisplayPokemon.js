@@ -4,7 +4,7 @@ import { styles } from "../styles/Styles";
 import { Audio } from "expo-av";
 import { useState, useEffect } from "react";
 
-export default function DisplayPokemon({visible, onDismiss, pokemon}) {
+export default function DisplayPokemon({ visible, onDismiss, pokemon }) {
 
     const [sound, setSound] = useState();
 
@@ -24,27 +24,26 @@ export default function DisplayPokemon({visible, onDismiss, pokemon}) {
     // Poistaa äänen muistista
     useEffect(() => {
         return sound
-          ? () => {
-              sound.unloadAsync();
+            ? () => {
+                sound.unloadAsync();
             }
-          : undefined;
-      }, [sound]);
+            : undefined;
+    }, [sound]);
 
     return (
 
         <Portal>
             <Modal visible={visible} onDismiss={onDismiss} contentContainerStyle={styles.modal}>
-            {pokemon ? (
+                {pokemon ? (
                     <View>
-                        <Text style={styles.title}>{pokemon.name}</Text>
+                        <Text style={styles.titleText}>{pokemon.name}</Text>
                         <Image source={{ uri: pokemon.image }} style={styles.image} />
-                        <Text>Type: {pokemon.types}</Text>
-                        <Text>Weight: {pokemon.weight} </Text>
-                        <Text>Height: {pokemon.height}</Text>
-                        <Text>{pokemon.description}</Text>
-                        <Text>{pokemon.health}</Text>
-                        <Text>{pokemon.move.name} {pokemon.move.power}</Text>
-                        <Button onPress={playSound}>Play sound</Button>
+                        <Text style={styles.globalText}>Weight: {pokemon.weight} </Text>
+                        <Text style={styles.globalText}>Height: {pokemon.height}</Text>
+                        <Text style={styles.globalText}>{pokemon.description}</Text>
+                        <Text style={styles.globalText}>HP: {pokemon.health}</Text>
+                        <Text style={styles.globalText}>Attack: {pokemon.move.name}, {pokemon.move.power} dmg </Text>
+                        <Button mode='contained' style={styles.button} textColor='black' icon='music' onPress={playSound}>Play sound</Button>
                     </View>
                 ) : (
                     <Text>Loading...</Text>
